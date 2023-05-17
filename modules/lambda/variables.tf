@@ -1,5 +1,5 @@
 variable "region" {
-  description = "Region to deploy infrastructure"
+  description = "Current region"
   type        = string
 }
 
@@ -8,18 +8,18 @@ variable "account_id" {
   type        = string
 }
 
-variable "academy_labrole_arn" {
-  description = "AWS Academy LabRole ARN"
+variable "lambda_name" {
+  description = "Lambda function name"
   type        = string
 }
 
-variable "name_prefix" {
-  description = "Prefix for Name tag in services"
+variable "lambda_description" {
+  description = "Lambda function description"
   type        = string
 }
 
 variable "lambda_resources_path" {
-  description = "Path to zip file with lambda resources"
+  description = "ZIP file with local resources"
   type        = string
 }
 
@@ -28,7 +28,7 @@ variable "lambda_handler_file" {
   type        = string
 }
 
-variable "static_resources" {
-  description = "Static site resources folder"
+variable "academy_labrole_arn" {
+  description = "AWS Academy LabRole ARN. IAM > Roles > LabRole"
   type        = string
 }
