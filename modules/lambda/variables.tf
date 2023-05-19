@@ -25,18 +25,18 @@ variable "academy_labrole_arn" {
   type        = string
 }
 
-variable "role_arn" { 
+variable "role_resources_arn" { 
   description = "Role resources to be accessed"
   type        = list(string)
   default     = []
 }
 
-variable "private_subnet_id" {
-  type        = string
+variable "subnet_ids" {
+  type        = list(string)
   description = "Private subnet id for the subnet where the lambda lives"
 }
 
-variable "lambda_sg_id" {
+variable "sg_id" {
   type        = string
   description = "Security Group for the current lambda"
 }
