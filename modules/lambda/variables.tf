@@ -1,12 +1,4 @@
-variable "region" {
-  description = "Current region"
-  type        = string
-}
 
-variable "account_id" {
-  description = "Account ID"
-  type        = string
-}
 
 variable "lambda_name" {
   description = "Lambda function name"
@@ -31,4 +23,20 @@ variable "lambda_handler_file" {
 variable "academy_labrole_arn" {
   description = "AWS Academy LabRole ARN. IAM > Roles > LabRole"
   type        = string
+}
+
+variable "role_arn" { 
+  description = "Role resources to be accessed"
+  type        = list(string)
+  default     = []
+}
+
+variable "private_subnet_id" {
+  type        = string
+  description = "Private subnet id for the subnet where the lambda lives"
+}
+
+variable "lambda_sg_id" {
+  type        = string
+  description = "Security Group for the current lambda"
 }

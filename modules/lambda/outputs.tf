@@ -1,5 +1,14 @@
-# =============== API Gateway ===============
-output "rest_api_endpoint" {
-  description = "Lambda Endpoint path of the REST API"
-  value       = try(aws_api_gateway_resource.rest_api.path, null)
+output "lambda_invoke_function_arn" {
+  description = "Lambda's arn for invokation on api-gw"
+  value       = aws_lambda_function.this.invoke_arn
+}
+
+output "lambda_function_arn" {
+  description = "Lambda's arn for identification"
+  value       = aws_lambda_function.this.arn
+}
+
+output "lambda_function_name" {
+  description = "Function name"
+  value       = aws_lambda_function.this.function_name
 }
