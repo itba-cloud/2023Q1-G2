@@ -9,3 +9,7 @@ output "rest_api_domain_name" {
 output "rest_api_path" {
   value = "${aws_api_gateway_stage.stage.stage_name}${aws_api_gateway_resource.resource.path_part}"
 }
+output "domain_name" {
+  description = "API GW domain_name"
+  value       = replace(aws_api_gateway_stage.stage.invoke_url, "/^https?://([^/]*).*/", "$1")
+}

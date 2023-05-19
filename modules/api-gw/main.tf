@@ -1,10 +1,10 @@
 
 //root
 resource "aws_api_gateway_rest_api" "this" {
-  name = var.rest_api_name
-  description = var.rest_api_desc
+  name = var.name
+  description = var.desc
   tags = {
-    Name = var.rest_api_name
+    Name = var.name
   }
 }
 
@@ -52,7 +52,7 @@ resource "aws_api_gateway_stage" "stage" {
 
   deployment_id = aws_api_gateway_deployment.deployment.id
   rest_api_id   = aws_api_gateway_rest_api.this.id
-  stage_name    = var.rest_api_stage_name
+  stage_name    = var.stage_name
 }
 
 

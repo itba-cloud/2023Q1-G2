@@ -16,7 +16,8 @@ module "lambda_function" {
 
 }
 
-module "api-gw" {
+
+module "api_gw" {
 
   source = "../modules/api-gw"
   depends_on = [
@@ -24,14 +25,27 @@ module "api-gw" {
   ]
   region              = local.aws_region
   account_id          = 341639355362
-  rest_api_name       = "aws-api-gateway-test"
-  rest_api_desc       = "Attend request and delegate to lambdas"
-  rest_api_tag_name   = "Api Gateway"
-  rest_api_stage_name = "dev"
+  name       = "aws-api-gateway-test"
+  desc       = "Attend request and delegate to lambdas"
+  tag_name   = "Api Gateway"
+  stage_name = local.stage_name
   resource_path_name  = "foo"
   lambda_func_name    = module.lambda_function.lambda_function_name
   lambda_func_arn     = module.lambda_function.lambda_invoke_function_arn
 }
+
+module "cloudfront" {
+
+  source = "../modules/cdn"
+
+
+ // domain_name     = module.s3["www-website"].website_endpoint
+  stage_name = local.stage_name
+  api_domain_name = module.api_gw.domain_name
+  apigw_origin_id = "api-gw"
+  s3_origin_id    = "S3"
+}
+
 
 module "vpc" {
 

@@ -4,7 +4,7 @@ locals {
   aws_region      = "us-east-1"
   resources_path  = "../resources"
   name_prefix     = "test"
-
+  stage_name = "prod"
   lambda = {
     name           = "hello_lambda"
     description    = "${local.name_prefix} - hello world"

@@ -1,4 +1,4 @@
-variable "rest_api_name" {
+variable "name" {
   type        = string
   description = "REST API name"
 }
@@ -13,13 +13,13 @@ variable "account_id" {
   type        = string
 }
 
-variable "rest_api_desc" {
+variable "desc" {
   type        = string
   description = "Short description of what this api is/does"
   default     = ""
 }
 
-variable "rest_api_stage_name" {
+variable "stage_name" {
   type        = string
   description = "The name of the API Gateway stage"
   default     = "prod"
@@ -42,7 +42,7 @@ variable "resource_path_name"{
     description = "Then name for the resource path"
 }
 
-variable "rest_api_tag_name" {
+variable "tag_name" {
   type        = string
   description = "Rest api tag for resource identification"
 }
