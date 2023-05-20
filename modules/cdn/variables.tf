@@ -2,10 +2,10 @@
 # Amazon Cloudfront variables
 # ---------------------------------------------------------------------------
 
-# variable "domain_name" {
-#   type        = string
-#   description = "Domain name"
-# }
+variable "domain_name" {
+  type        = any
+  description = "Domain name"
+}
 
 variable "stage_name" {
   type = string

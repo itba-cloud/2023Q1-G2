@@ -4,14 +4,56 @@ locals {
   aws_region      = "us-east-1"
   resources_path  = "../resources"
   name_prefix     = "test"
-  stage_name = "prod"
+  stage_name      = "prod"
+
+  bucket_name = "g2-20231q-itba-cloud-computing"
+  # path         = "./../resources"
+  # modules_path = "./../modules"
+  # region       = "us-east-1"
+  az1 = "${local.aws_region}a"
+
+  s3_front = {
+
+    # 1 - Website
+    website = {
+      bucket_name        = local.bucket_name
+      path               = local.resources_path
+      bucket_acl         = "public-read"
+      index_file         = "index.html"
+      public_read_policy = true
+      bucket_tag         = "Front Website Bucket"
+      objects = {
+        index = {
+          filename     = "html/index.html"
+          content_type = "text/html"
+        }
+      }
+    }
+
+    # 2 - WWW Website
+    www-website = {
+      bucket_name       = "www.${local.bucket_name}"
+      redirect_hostname = "${local.bucket_name}.s3-website-${local.aws_region}.amazonaws.com"
+      bucket_acl        = "public-read"
+      bucket_tag        = "Front www Bucket"
+    }
+
+    # 3 - Logs
+    website-logs = {
+      bucket_name = "${local.bucket_name}-logs"
+      bucket_acl  = "private"
+      bucket_tag  = "Front Logs Bucket"
+    }
+  }
+
+
   lambda = {
     name           = "hello_lambda"
     description    = "${local.name_prefix} - hello world"
     resources_path = "${local.resources_path}/lambda.zip"
     handler_file   = "another_lambda"
     role_name      = "LabRole"
-    
+
   }
 
   tables = {
@@ -61,7 +103,7 @@ locals {
           type = "N"
         },
       ]
-      hash_key = "patient"
+      hash_key  = "patient"
       range_key = "timestamp"
       global_secondary_indexes = [
         {

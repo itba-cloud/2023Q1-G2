@@ -9,10 +9,10 @@ module "lambda_function" {
   lambda_description    = "${local.lambda.name} - hello world"
   lambda_resources_path = local.lambda.resources_path
   lambda_handler_file   = local.lambda.handler_file
-  academy_labrole_arn   = "arn:aws:iam::341639355362:role/LabRole"
-  role_resources_arn             = [for table in module.dynamodb_table : table.dynamodb_table_arn]
+  academy_labrole_arn   = "arn:aws:iam::060683893271:role/LabRole"
+  role_resources_arn    = [for table in module.dynamodb_table : table.dynamodb_table_arn]
   sg_id                 = module.vpc.sg_id
-  subnet_ids    = module.vpc.subnet_ids
+  subnet_ids            = module.vpc.subnet_ids
 
 }
 
@@ -23,15 +23,15 @@ module "api_gw" {
   depends_on = [
     module.lambda_function
   ]
-  region              = local.aws_region
-  account_id          = 341639355362
-  name       = "aws-api-gateway-test"
-  desc       = "Attend request and delegate to lambdas"
-  tag_name   = "Api Gateway"
-  stage_name = local.stage_name
-  resource_path_name  = "foo"
-  lambda_func_name    = module.lambda_function.lambda_function_name
-  lambda_func_arn     = module.lambda_function.lambda_invoke_function_arn
+  region             = local.aws_region
+  account_id         = 341639355362
+  name               = "aws-api-gateway-test"
+  desc               = "Attend request and delegate to lambdas"
+  tag_name           = "Api Gateway"
+  stage_name         = local.stage_name
+  resource_path_name = "foo"
+  lambda_func_name   = module.lambda_function.lambda_function_name
+  lambda_func_arn    = module.lambda_function.lambda_invoke_function_arn
 }
 
 module "cloudfront" {
@@ -39,8 +39,8 @@ module "cloudfront" {
   source = "../modules/cdn"
 
 
- // domain_name     = module.s3["www-website"].website_endpoint
-  stage_name = local.stage_name
+  domain_name     = module.s3-front["www-website"].website_endpoint
+  stage_name      = local.stage_name
   api_domain_name = module.api_gw.domain_name
   apigw_origin_id = "api-gw"
   s3_origin_id    = "S3"
@@ -74,15 +74,32 @@ module "dynamodb_table" {
   for_each = local.tables
   source   = "terraform-aws-modules/dynamodb-table/aws"
 
-  name                    = each.value.name
-  hash_key                = each.value.hash_key
-  range_key               = each.value.range_key
-  attributes              = each.value.attributes
+  name                     = each.value.name
+  hash_key                 = each.value.hash_key
+  range_key                = each.value.range_key
+  attributes               = each.value.attributes
   global_secondary_indexes = try(each.value.global_secondary_indexes, [])
   tags = {
     Terraform   = "true"
     Environment = "staging"
   }
+}
+
+module "s3-front" {
+  for_each = local.s3_front
+  source   = "../modules/storage"
+
+  # providers = {
+  #   aws = aws.aws
+  # }
+
+  bucket_name        = each.value.bucket_name
+  objects            = try(each.value.objects, {})
+  bucket_acl         = try(each.value.bucket_acl, "private")
+  public_read_policy = try(each.value.public_read_policy, false)
+  index_file         = try(each.value.index_file, null)
+  redirect_hostname  = try(each.value.redirect_hostname, null)
+  bucket_tag         = each.value.bucket_tag
 }
 
 # module "static-site" {
