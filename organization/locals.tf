@@ -5,8 +5,8 @@ locals {
   resources_path  = "../resources"
   name_prefix     = "test"
   stage_name      = "prod"
-
-  bucket_name = "g2-20231q-itba-cloud-computing"
+  account_id = 341639355362
+  bucket_name = "g2-20231q-itba-cloud-computing-b"
   # path         = "./../resources"
   # modules_path = "./../modules"
   # region       = "us-east-1"
@@ -35,6 +35,7 @@ locals {
       bucket_name       = "www.${local.bucket_name}"
       redirect_hostname = "${local.bucket_name}.s3-website-${local.aws_region}.amazonaws.com"
       bucket_acl        = "public-read"
+      
       bucket_tag        = "Front www Bucket"
     }
 

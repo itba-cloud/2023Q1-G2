@@ -9,7 +9,8 @@ module "lambda_function" {
   lambda_description    = "${local.lambda.name} - hello world"
   lambda_resources_path = local.lambda.resources_path
   lambda_handler_file   = local.lambda.handler_file
-  academy_labrole_arn   = "arn:aws:iam::060683893271:role/LabRole"
+  
+  academy_labrole_arn   = "arn:aws:iam::${local.account_id}:role/LabRole"
   role_resources_arn    = [for table in module.dynamodb_table : table.dynamodb_table_arn]
   sg_id                 = module.vpc.sg_id
   subnet_ids            = module.vpc.subnet_ids
@@ -21,10 +22,10 @@ module "api_gw" {
 
   source = "../modules/api-gw"
   depends_on = [
-    module.lambda_function
+    module.lambda_function , module.s3-front
   ]
   region             = local.aws_region
-  account_id         = 341639355362
+  account_id         = local.account_id
   name               = "aws-api-gateway-test"
   desc               = "Attend request and delegate to lambdas"
   tag_name           = "Api Gateway"
@@ -92,7 +93,7 @@ module "s3-front" {
   # providers = {
   #   aws = aws.aws
   # }
-
+  role_arn = "arn:aws:iam::${local.account_id}:role/LabRole"
   bucket_name        = each.value.bucket_name
   objects            = try(each.value.objects, {})
   bucket_acl         = try(each.value.bucket_acl, "private")
