@@ -1,12 +1,13 @@
 provider "aws" {
-  alias                    = "aws"
-  region                   = var.region
-  profile                  = "default"
+
+  region = "us-east-1"
+
   shared_credentials_files = ["~/.aws/credentials"]
+  profile                  = "default"
 
   default_tags {
     tags = {
-      author     = "Martín E. Zahnd"
+      author     = "Grupo2"
       version    = 1
       university = "ITBA"
       subject    = "Cloud Computing"

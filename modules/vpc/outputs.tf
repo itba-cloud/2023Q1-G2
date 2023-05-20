@@ -10,9 +10,16 @@ output "vpc_id" {
 }
 
 # ===== Subnets =====
-output "public_subnets_ids" {
+output "subnet_ids" {
   description = "Public subnet IDs"
   value = [
     for k, v in aws_subnet.public : try(v.id, null)
   ]
+}
+
+
+
+output "sg_id" {
+  description = "Security group's id"
+  value       = aws_security_group.sg.id
 }
