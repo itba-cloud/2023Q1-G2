@@ -44,3 +44,8 @@ variable "bucket_tag" {
   type        = string
   description = "Bucket tag for resource identification"
 }
+
+variable "role_arn"{
+  type = string
+  description = "bucket role arn"
+}

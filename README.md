@@ -21,6 +21,8 @@ El proyecto consiste en una aplicacion web que funciona como portal de gestion d
 
 Se requiere tener instalado terraform, para la conexión con aws se requiere actualizar con las credenciales de AWS el archivo: `~/.aws/credentials`.
 
+Tambien se debe setear en la parte de [locals](/organization/locals.tf) el account_id al que vaya a ser utilizado 
+
 ## Componentes deployados
 
 1. VPC
@@ -42,4 +44,16 @@ $ terrafom plan
 # aplicar los cambios
 $ terraform apply
 ```
+## Algunas Funciones utilizadas
 
+- [format, try, replace](/modules/storage/main.tf)
+- [filebase64sha256](/modules/lambda/main.tf)
+
+## Meta argumentos
+
+- [count](/modules/storage/main.tf)
+- [for_each, depeds_on](/organization/main.tf)
+
+## Problemas
+
+Tenemos problemas en la configuracion del sitio web estatico y sus permisos, pero los elementos están creados.
